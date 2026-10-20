@@ -6,7 +6,7 @@ from app import routers
 
 # Cria as tabelas que ainda não existirem (opcional se o schema.sql já
 # tiver sido executado). Não sobrescreve tabelas existentes.
-Base.metadata.create_all(bind=[engine])
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Controle de Gastos",

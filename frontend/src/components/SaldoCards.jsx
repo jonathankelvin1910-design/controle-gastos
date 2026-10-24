@@ -29,10 +29,26 @@ function SaldoCards({ resumo }) {
     }
   ]
 
+  const containerStyle = {
+    display: 'flex',
+    gap: '16px',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
+  }
+
+  const cardStyle = {
+    flex: 1,
+    minWidth: '180px',
+    padding: '16px',
+    borderRadius: '12px',
+    border: '1px solid rgba(255,255,255,0.15)',
+    background: 'rgba(255,255,255,0.05)'
+  }
+
   return (
-    <div className="cards-saldo">
+    <div className="cards-saldo" style={containerStyle}>
       {cards.map((card) => (
-        <div key={card.titulo} className={`card ${card.classe}`}>
+        <div key={card.titulo} className={`card ${card.classe}`} style={cardStyle}>
           <h3>{card.titulo}</h3>
           <p style={{ color: card.cor }}>{formatarValor(card.valor)}</p>
         </div>

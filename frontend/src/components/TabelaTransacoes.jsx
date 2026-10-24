@@ -55,7 +55,7 @@ function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
               <td className={t.tipo === 'receita' ? 'positivo' : 'negativo'}>
                 {formatarValor(t.valor)}
               </td>
-              <td className={t.tipo === 'receita' ? 'tipo-receita' : 'tipo-despesa'}>
+              <td style={{ color: t.tipo === 'receita' ? '#16a34a' : '#dc2626' }}>
                 {t.tipo}
               </td>
               <td>{formatarData(t.data)}</td>

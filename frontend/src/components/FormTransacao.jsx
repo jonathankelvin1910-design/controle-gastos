@@ -36,46 +36,70 @@ function FormTransacao({ categorias, onCriado }) {
       <h2>Nova Transação</h2>
       {erro && <p className="erro">{erro}</p>}
 
-      <input
-        type="text"
-        placeholder="Descrição"
-        value={descricao}
-        onChange={(e) => setDescricao(e.target.value)}
-        required
-      />
+      <div className="form-campos" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ flex: '1 1 100%' }}>
+          <label htmlFor="descricao">Descrição</label>
+          <input
+            id="descricao"
+            type="text"
+            placeholder="Descrição"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            required
+          />
+        </div>
 
-      <input
-        type="number"
-        step="0.01"
-        min="0"
-        placeholder="Valor"
-        value={valor === '' ? '' : valor}
-        onChange={(e) => setValor(e.target.value)}
-        required
-      />
+        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+          <label htmlFor="valor">Valor</label>
+          <input
+            id="valor"
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="Valor"
+            value={valor === '' ? '' : valor}
+            onChange={(e) => setValor(e.target.value)}
+            required
+          />
+        </div>
 
-      <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-        <option value="receita">Receita</option>
-        <option value="despesa">Despesa</option>
-      </select>
+        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+          <label htmlFor="tipo">Tipo</label>
+          <select id="tipo" value={tipo} onChange={(e) => setTipo(e.target.value)}>
+            <option value="receita">Receita</option>
+            <option value="despesa">Despesa</option>
+          </select>
+        </div>
 
-      <input
-        type="date"
-        value={data}
-        onChange={(e) => setData(e.target.value)}
-        required
-      />
+        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+          <label htmlFor="data">Data</label>
+          <input
+            id="data"
+            type="date"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            required
+          />
+        </div>
 
-      <select value={categoriaId} onChange={(e) => setCategoriaId(e.target.value)}>
-        <option value="">Sem categoria</option>
-        {categorias.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.nome}
-          </option>
-        ))}
-      </select>
+        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+          <label htmlFor="categoria">Categoria</label>
+          <select
+            id="categoria"
+            value={categoriaId}
+            onChange={(e) => setCategoriaId(e.target.value)}
+          >
+            <option value="">Sem categoria</option>
+            {categorias.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-      <button type="submit">Adicionar</button>
+      <button type="submit" className="btn-adicionar">Adicionar</button>
     </form>
   )
 }

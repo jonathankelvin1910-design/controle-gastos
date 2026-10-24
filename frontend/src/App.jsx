@@ -40,7 +40,7 @@ function App() {
         <GraficoPizza por_categoria={resumo?.por_categoria} />
       </div>
 
-      <TabelaTransacoes transacoes={transacoes} recarregar={recarregar} />
+      <TabelaTransacoes transacoes={transacoes} recarregar={recarregar} categorias={categorias} />
     </div>
   )
 }

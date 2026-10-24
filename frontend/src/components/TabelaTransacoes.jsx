@@ -6,7 +6,13 @@ const formatarData = (data) => {
   return `${dia}/${mes}/${ano}`
 }
 
-function TabelaTransacoes({ transacoes, recarregar }) {
+function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
+  const getNomeCategoria = (categoriaId) => {
+    if (!categoriaId) return 'Sem categoria'
+    const categoria = categorias.find((c) => c.id === Number(categoriaId))
+    return categoria ? categoria.nome : 'Sem categoria'
+  }
+
   const handleExcluir = async (id) => {
     if (window.confirm('Excluir esta transação?')) {
       try {
@@ -44,7 +50,7 @@ function TabelaTransacoes({ transacoes, recarregar }) {
               </td>
               <td>{t.tipo}</td>
               <td>{formatarData(t.data)}</td>
-              <td>{t.categoria_nome ?? (t.categoria_id ?? '-')}</td>
+              <td>{getNomeCategoria(t.categoria_id)}</td>
               <td>
                 <button onClick={() => handleExcluir(t.id)}>Excluir</button>
               </td>

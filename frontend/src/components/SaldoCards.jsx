@@ -31,14 +31,13 @@ function SaldoCards({ resumo }) {
 
   const containerStyle = {
     display: 'flex',
+    flexWrap: 'wrap',
     gap: '16px',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
+    justifyContent: 'center'
   }
 
   const cardStyle = {
-    flex: 1,
-    minWidth: '180px',
+    flex: '1 1 220px',
     padding: '16px',
     borderRadius: '12px',
     border: '1px solid rgba(255,255,255,0.15)',

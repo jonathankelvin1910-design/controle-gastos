@@ -32,42 +32,44 @@ function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
   }
 
   return (
-    <table className="tabela-transacoes">
-      <thead>
-        <tr>
-          <th>Descrição</th>
-          <th>Valor</th>
-          <th>Tipo</th>
-          <th>Data</th>
-          <th>Categoria</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {transacoes.length === 0 ? (
+    <div style={{ overflowX: 'auto', width: '100%' }}>
+      <table className="tabela-transacoes" style={{ width: '100%' }}>
+        <thead>
           <tr>
-            <td colSpan="6">Nenhum transação registrada.</td>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Categoria</th>
+            <th></th>
           </tr>
-        ) : (
-          transacoes.map((t) => (
-            <tr key={t.id}>
-              <td>{t.descricao}</td>
-              <td className={t.tipo === 'receita' ? 'positivo' : 'negativo'}>
-                {formatarValor(t.valor)}
-              </td>
-              <td style={{ color: t.tipo === 'receita' ? '#16a34a' : '#dc2626' }}>
-                {t.tipo}
-              </td>
-              <td>{formatarData(t.data)}</td>
-              <td>{getNomeCategoria(t.categoria_id)}</td>
-              <td>
-                <button onClick={() => handleExcluir(t.id)}>Excluir</button>
-              </td>
+        </thead>
+        <tbody>
+          {transacoes.length === 0 ? (
+            <tr>
+              <td colSpan="6">Nenhum transação registrada.</td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ) : (
+            transacoes.map((t) => (
+              <tr key={t.id}>
+                <td>{t.descricao}</td>
+                <td className={t.tipo === 'receita' ? 'positivo' : 'negativo'}>
+                  {formatarValor(t.valor)}
+                </td>
+                <td style={{ color: t.tipo === 'receita' ? '#16a34a' : '#dc2626' }}>
+                  {t.tipo}
+                </td>
+                <td>{formatarData(t.data)}</td>
+                <td>{getNomeCategoria(t.categoria_id)}</td>
+                <td>
+                  <button onClick={() => handleExcluir(t.id)}>Excluir</button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   )
 }
 

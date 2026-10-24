@@ -30,7 +30,7 @@ function App() {
   }, [])
 
   return (
-    <div className="app">
+    <div className="app" style={{ width: '100%', maxWidth: '1100px', margin: '0 auto', padding: '16px', boxSizing: 'border-box' }}>
       <h1>Controle de Gastos</h1>
 
       {resumo && <SaldoCards resumo={resumo} />}

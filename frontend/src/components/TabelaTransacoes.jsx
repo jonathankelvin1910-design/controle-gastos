@@ -6,6 +6,13 @@ const formatarData = (data) => {
   return `${dia}/${mes}/${ano}`
 }
 
+const formatarValor = (valor) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(valor)
+}
+
 function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
   const getNomeCategoria = (categoriaId) => {
     if (!categoriaId) return 'Sem categoria'
@@ -39,16 +46,18 @@ function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
       <tbody>
         {transacoes.length === 0 ? (
           <tr>
-            <td colSpan="6">Nenhuma transação registrada.</td>
+            <td colSpan="6">Nenhum transação registrada.</td>
           </tr>
         ) : (
           transacoes.map((t) => (
             <tr key={t.id}>
               <td>{t.descricao}</td>
               <td className={t.tipo === 'receita' ? 'positivo' : 'negativo'}>
-                R$ {t.valor.toFixed(2)}
+                {formatarValor(t.valor)}
               </td>
-              <td>{t.tipo}</td>
+              <td className={t.tipo === 'receita' ? 'tipo-receita' : 'tipo-despesa'}>
+                {t.tipo}
+              </td>
               <td>{formatarData(t.data)}</td>
               <td>{getNomeCategoria(t.categoria_id)}</td>
               <td>

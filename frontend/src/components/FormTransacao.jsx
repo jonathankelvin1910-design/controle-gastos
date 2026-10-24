@@ -36,8 +36,17 @@ function FormTransacao({ categorias, onCriado }) {
       <h2>Nova Transação</h2>
       {erro && <p className="erro">{erro}</p>}
 
-      <div className="form-campos" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-        <div style={{ flex: '1 1 100%' }}>
+      <div
+        className="form-campos"
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '12px',
+          justifyContent: 'center',
+          alignItems: 'flex-end'
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <label htmlFor="descricao">Descrição</label>
           <input
             id="descricao"
@@ -49,7 +58,7 @@ function FormTransacao({ categorias, onCriado }) {
           />
         </div>
 
-        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <label htmlFor="valor">Valor</label>
           <input
             id="valor"
@@ -63,7 +72,7 @@ function FormTransacao({ categorias, onCriado }) {
           />
         </div>
 
-        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <label htmlFor="tipo">Tipo</label>
           <select id="tipo" value={tipo} onChange={(e) => setTipo(e.target.value)}>
             <option value="receita">Receita</option>
@@ -71,7 +80,7 @@ function FormTransacao({ categorias, onCriado }) {
           </select>
         </div>
 
-        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <label htmlFor="data">Data</label>
           <input
             id="data"
@@ -82,7 +91,7 @@ function FormTransacao({ categorias, onCriado }) {
           />
         </div>
 
-        <div style={{ flex: '1 1 calc(50% - 12px)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <label htmlFor="categoria">Categoria</label>
           <select
             id="categoria"
@@ -97,9 +106,11 @@ function FormTransacao({ categorias, onCriado }) {
             ))}
           </select>
         </div>
-      </div>
 
-      <button type="submit" className="btn-adicionar">Adicionar</button>
+        <button type="submit" className="btn-adicionar" style={{ padding: '8px 16px' }}>
+          Adicionar
+        </button>
+      </div>
     </form>
   )
 }

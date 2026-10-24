@@ -13,6 +13,25 @@ const cores = [
   '#FFC107'
 ]
 
+const formatarValor = (valor) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(valor)
+}
+
+function CustomTooltip({ active, payload }) {
+  if (active && payload && payload.length) {
+    return (
+      <div>
+        <p>{payload[0].name}</p>
+        <p>{formatarValor(payload[0].value)}</p>
+      </div>
+    )
+  }
+  return null
+}
+
 function GraficoPizza({ por_categoria }) {
   const dados = (por_categoria || [])
     .map((categoria) => ({
@@ -23,18 +42,24 @@ function GraficoPizza({ por_categoria }) {
     .map((categoria, index) => ({ ...categoria, fill: cores[index % cores.length] }))
 
   return (
-    <div className="grafico-pizza">
+    <div className="grafico-pizza" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h2>Despesas por Categoria</h2>
       {dados.length === 0 ? (
         <p>Sem despesas registradas.</p>
       ) : (
         <PieChart width={420} height={320}>
-          <Pie data={dados} dataKey="valor" nameKey="nome" outerRadius={90} label>
+          <Pie
+            data={dados}
+            dataKey="valor"
+            nameKey="nome"
+            outerRadius={90}
+            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+          >
             {dados.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill} />
             ))}
           </Pie>
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
         </PieChart>
       )}

@@ -1,21 +1,31 @@
 function SaldoCards({ resumo }) {
   const { total_receitas, total_despesas, saldo } = resumo.resumo_geral
 
+  const formatarValor = (valor) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(valor)
+  }
+
   const cards = [
     {
       titulo: 'Receitas',
       valor: total_receitas,
-      classe: 'card-receitas'
+      classe: 'card-receitas',
+      cor: '#16a34a'
     },
     {
       titulo: 'Despesas',
       valor: total_despesas,
-      classe: 'card-despesas'
+      classe: 'card-despesas',
+      cor: '#dc2626'
     },
     {
       titulo: 'Saldo',
       valor: saldo,
-      classe: 'card-saldo'
+      classe: 'card-saldo',
+      cor: saldo >= 0 ? '#16a34a' : '#dc2626'
     }
   ]
 
@@ -24,7 +34,7 @@ function SaldoCards({ resumo }) {
       {cards.map((card) => (
         <div key={card.titulo} className={`card ${card.classe}`}>
           <h3>{card.titulo}</h3>
-          <p>R$ {card.valor.toFixed(2)}</p>
+          <p style={{ color: card.cor }}>{formatarValor(card.valor)}</p>
         </div>
       ))}
     </div>

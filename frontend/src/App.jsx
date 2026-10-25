@@ -44,6 +44,47 @@ function App() {
     return true
   })
 
+  const getNomeCategoria = (categoriaId) => {
+    if (!categoriaId) return 'Sem categoria'
+    const categoria = categorias.find((c) => c.id === Number(categoriaId))
+    return categoria ? categoria.nome : 'Sem categoria'
+  }
+
+  const resumoFiltrado = (() => {
+    const agrupado = {}
+    for (const t of transacoesFiltradas) {
+      const categoriaId = t.categoria_id != null ? Number(t.categoria_id) : null
+      const valor = Number(t.valor)
+      if (!agrupado[categoriaId]) {
+        agrupado[categoriaId] = {
+          categoria_id: categoriaId,
+          categoria_nome: getNomeCategoria(categoriaId),
+          total_receitas: 0,
+          total_despesas: 0
+        }
+      }
+      if (t.tipo === 'receita') {
+        agrupado[categoriaId].total_receitas += valor
+      } else {
+        agrupado[categoriaId].total_despesas += valor
+      }
+    }
+    const por_categoria = Object.values(agrupado).map((c) => ({
+      ...c,
+      saldo: c.total_receitas - c.total_despesas
+    }))
+    const total_receitas = por_categoria.reduce((acc, c) => acc + c.total_receitas, 0)
+    const total_despesas = por_categoria.reduce((acc, c) => acc + c.total_despesas, 0)
+    return {
+      resumo_geral: {
+        total_receitas,
+        total_despesas,
+        saldo: total_receitas - total_despesas
+      },
+      por_categoria
+    }
+  })()
+
   useEffect(() => {
     recarregar()
   }, [])
@@ -52,7 +93,7 @@ function App() {
     <div className="app" style={{ width: '100%', maxWidth: '1100px', margin: '0 auto', padding: '16px', boxSizing: 'border-box' }}>
       <h1>Controle de Gastos</h1>
 
-      {resumo && <SaldoCards resumo={resumo} />}
+      {resumoFiltrado && <SaldoCards resumo={resumoFiltrado} />}
 
       <div className="grade">
         <FormTransacao
@@ -62,7 +103,7 @@ function App() {
           onEditar={handleEditar}
           onCancelarEdicao={handleCancelarEdicao}
         />
-        <GraficoPizza por_categoria={resumo?.por_categoria} />
+        <GraficoPizza por_categoria={resumoFiltrado.por_categoria} />
       </div>
 
       <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>

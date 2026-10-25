@@ -10,6 +10,8 @@ function App() {
   const [transacoes, setTransacoes] = useState([])
   const [categorias, setCategorias] = useState([])
   const [transacaoEdicao, setTransacaoEdicao] = useState(null)
+  const [filtroMes, setFiltroMes] = useState('')
+  const [filtroCategoria, setFiltroCategoria] = useState('')
 
   const recarregar = async () => {
     try {
@@ -34,6 +36,14 @@ function App() {
     setTransacaoEdicao(null)
   }
 
+  const meses = [...new Set(transacoes.map(t => t.data?.slice(0, 7)))].filter(Boolean).sort((a, b) => b.localeCompare(a))
+
+  const transacoesFiltradas = transacoes.filter(t => {
+    if (filtroMes && t.data?.slice(0, 7) !== filtroMes) return false
+    if (filtroCategoria && Number(t.categoria_id) !== Number(filtroCategoria)) return false
+    return true
+  })
+
   useEffect(() => {
     recarregar()
   }, [])
@@ -55,8 +65,33 @@ function App() {
         <GraficoPizza por_categoria={resumo?.por_categoria} />
       </div>
 
+      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '16px' }}>
+        <div>
+          <label>Mês</label>
+          <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)}>
+            <option value="">Todos</option>
+            {meses.map(mes => (
+              <option key={mes} value={mes}>
+                {mes.split('-')[1]}/${mes.split('-')[0]}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label>Categoria</label>
+          <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
+            <option value="">Todas</option>
+            {categorias.map(cat => (
+              <option key={cat.id} value={cat.id}>
+                {cat.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <TabelaTransacoes
-        transacoes={transacoes}
+        transacoes={transacoesFiltradas}
         recarregar={recarregar}
         categorias={categorias}
         onEditar={handleEditar}

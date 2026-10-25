@@ -65,28 +65,30 @@ function App() {
         <GraficoPizza por_categoria={resumo?.por_categoria} />
       </div>
 
-      <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '16px' }}>
-        <div>
-          <label>Mês</label>
-          <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)}>
-            <option value="">Todos</option>
-            {meses.map(mes => (
-              <option key={mes} value={mes}>
-                {mes.split('-')[1]}/${mes.split('-')[0]}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Categoria</label>
-          <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
-            <option value="">Todas</option>
-            {categorias.map(cat => (
-              <option key={cat.id} value={cat.id}>
-                {cat.nome}
-              </option>
-            ))}
-          </select>
+      <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <label>Mês</label>
+            <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)}>
+              <option value="">Todos</option>
+              {meses.map(mes => (
+                <option key={mes} value={mes}>
+                  {mes.split('-')[1]}/${mes.split('-')[0]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <label>Categoria</label>
+            <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
+              <option value="">Todas</option>
+              {categorias.map(cat => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.nome}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

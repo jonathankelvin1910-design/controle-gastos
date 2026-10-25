@@ -52,6 +52,7 @@ function App() {
           onEditar={handleEditar}
           onCancelarEdicao={handleCancelarEdicao}
         />
+        <GraficoPizza por_categoria={resumo?.por_categoria} />
       </div>
 
       <TabelaTransacoes

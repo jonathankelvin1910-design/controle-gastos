@@ -13,7 +13,7 @@ const formatarValor = (valor) => {
   }).format(valor)
 }
 
-function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
+function TabelaTransacoes({ transacoes, recarregar, categorias = [], onEditar }) {
   const getNomeCategoria = (categoriaId) => {
     if (!categoriaId) return 'Sem categoria'
     const categoria = categorias.find((c) => c.id === Number(categoriaId))
@@ -62,6 +62,11 @@ function TabelaTransacoes({ transacoes, recarregar, categorias = [] }) {
                 <td>{formatarData(t.data)}</td>
                 <td>{getNomeCategoria(t.categoria_id)}</td>
                 <td>
+                  {onEditar && (
+                    <button onClick={() => onEditar(t)} style={{ marginRight: '8px' }}>
+                      Editar
+                    </button>
+                  )}
                   <button onClick={() => handleExcluir(t.id)}>Excluir</button>
                 </td>
               </tr>

@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { createTransacao } from '../api/api'
+import { useState, useEffect } from 'react'
+import { createTransacao, updateTransacao } from '../api/api'
 
-function FormTransacao({ categorias, onCriado }) {
+function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao }) {
   const [descricao, setDescricao] = useState('')
   const [valor, setValor] = useState('')
   const [tipo, setTipo] = useState('receita')
@@ -9,31 +9,60 @@ function FormTransacao({ categorias, onCriado }) {
   const [categoriaId, setCategoriaId] = useState('')
   const [erro, setErro] = useState('')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setErro('')
-    try {
-      await createTransacao({
-        descricao,
-        valor: Number(valor),
-        tipo,
-        data,
-        categoria_id: categoriaId ? Number(categoriaId) : null
-      })
+  useEffect(() => {
+    if (transacaoEdicao) {
+      setDescricao(transacaoEdicao.descricao)
+      setValor(String(transacaoEdicao.valor))
+      setTipo(transacaoEdicao.tipo)
+      setData(transacaoEdicao.data)
+      setCategoriaId(transacaoEdicao.categoria_id ? String(transacaoEdicao.categoria_id) : '')
+    } else {
       setDescricao('')
       setValor('')
       setTipo('receita')
       setData(new Date().toISOString().slice(0, 10))
       setCategoriaId('')
+    }
+    setErro('')
+  }, [transacaoEdicao])
+
+  const resetar = () => {
+    setDescricao('')
+    setValor('')
+    setTipo('receita')
+    setData(new Date().toISOString().slice(0, 10))
+    setCategoriaId('')
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setErro('')
+    const dados = {
+      descricao,
+      valor: Number(valor),
+      tipo,
+      data,
+      categoria_id: categoriaId ? Number(categoriaId) : null
+    }
+    try {
+      if (transacaoEdicao) {
+        await updateTransacao(transacaoEdicao.id, dados)
+      } else {
+        await createTransacao(dados)
+      }
+      resetar()
       onCriado()
+      if (transacaoEdicao) {
+        onCancelarEdicao()
+      }
     } catch {
-      setErro('Erro ao criar transação. Tente novamente.')
+      setErro('Erro ao salvar transação. Tente novamente.')
     }
   }
 
   return (
     <form className="form-transacao" onSubmit={handleSubmit}>
-      <h2>Nova Transação</h2>
+      <h2>{transacaoEdicao ? 'Editar Transação' : 'Nova Transação'}</h2>
       {erro && <p className="erro">{erro}</p>}
 
       <div
@@ -107,9 +136,20 @@ function FormTransacao({ categorias, onCriado }) {
           </select>
         </div>
 
-        <button type="submit" className="btn-adicionar" style={{ padding: '8px 16px' }}>
-          Adicionar
-        </button>
+        {transacaoEdicao ? (
+          <>
+            <button type="submit" className="btn-adicionar" style={{ padding: '8px 16px' }}>
+              Salvar
+            </button>
+            <button type="button" className="btn-cancelar" onClick={onCancelarEdicao} style={{ padding: '8px 16px' }}>
+              Cancelar
+            </button>
+          </>
+        ) : (
+          <button type="submit" className="btn-adicionar" style={{ padding: '8px 16px' }}>
+            Adicionar
+          </button>
+        )}
       </div>
     </form>
   )

@@ -9,6 +9,7 @@ function App() {
   const [resumo, setResumo] = useState(null)
   const [transacoes, setTransacoes] = useState([])
   const [categorias, setCategorias] = useState([])
+  const [transacaoEdicao, setTransacaoEdicao] = useState(null)
 
   const recarregar = async () => {
     try {
@@ -25,6 +26,14 @@ function App() {
     }
   }
 
+  const handleEditar = (transacao) => {
+    setTransacaoEdicao(transacao)
+  }
+
+  const handleCancelarEdicao = () => {
+    setTransacaoEdicao(null)
+  }
+
   useEffect(() => {
     recarregar()
   }, [])
@@ -36,11 +45,21 @@ function App() {
       {resumo && <SaldoCards resumo={resumo} />}
 
       <div className="grade">
-        <FormTransacao categorias={categorias} onCriado={recarregar} />
-        <GraficoPizza por_categoria={resumo?.por_categoria} />
+        <FormTransacao
+          categorias={categorias}
+          onCriado={recarregar}
+          transacaoEdicao={transacaoEdicao}
+          onEditar={handleEditar}
+          onCancelarEdicao={handleCancelarEdicao}
+        />
       </div>
 
-      <TabelaTransacoes transacoes={transacoes} recarregar={recarregar} categorias={categorias} />
+      <TabelaTransacoes
+        transacoes={transacoes}
+        recarregar={recarregar}
+        categorias={categorias}
+        onEditar={handleEditar}
+      />
     </div>
   )
 }

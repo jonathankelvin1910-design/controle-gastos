@@ -1,7 +1,21 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
-const CORES = ['#2196f3', '#f44336', '#4caf50', '#ff9800', '#9c27b0', '#00bcd4', '#e91e63', '#8bc34a']
+const COR_POR_CATEGORIA = {
+  'Alimentação': '#3b82f6',
+  'Moradia': '#f59e0b',
+  'Saúde': '#a855f7',
+  'Transporte': '#06b6d4',
+  'Educação': '#ef4444',
+  'Lazer': '#22c55e',
+  'Outros': '#94a3b8',
+  'Salário': '#10b981',
+  'Sem categoria': '#64748b',
+}
+const CORES_RESERVA = ['#e879f9', '#fb7185', '#facc15', '#2dd4bf', '#818cf8']
 const RADIAN = Math.PI / 180
+
+const corDaCategoria = (nome, indice) =>
+  COR_POR_CATEGORIA[nome] ?? CORES_RESERVA[indice % CORES_RESERVA.length]
 
 const formatarMoeda = (valor) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor)
@@ -24,19 +38,25 @@ function GraficoPizza({ por_categoria }) {
     .map((c) => ({ nome: c.categoria_nome, valor: Number(c.total_despesas) }))
 
   return (
-    <div style={{ width: '100%', maxWidth: 520, margin: '0 auto' }}>
+    <div className="panel painel-grafico">
       <h2>Despesas por Categoria</h2>
-      <ResponsiveContainer width="100%" height={360}>
-        <PieChart>
-          <Pie data={dados} dataKey="valor" nameKey="nome" outerRadius="80%" labelLine={false} label={rotuloPorcentagem}>
-            {dados.map((_, i) => (
-              <Cell key={i} fill={CORES[i % CORES.length]} />
-            ))}
-          </Pie>
-          <Tooltip formatter={(valor) => formatarMoeda(valor)} />
-          <Legend />
-        </PieChart>
-      </ResponsiveContainer>
+      {dados.length === 0 ? (
+        <p style={{ color: 'var(--muted)', textAlign: 'center', margin: '48px 0' }}>
+          Sem despesas para mostrar.
+        </p>
+      ) : (
+        <ResponsiveContainer width="100%" height={340}>
+          <PieChart>
+            <Pie data={dados} dataKey="valor" nameKey="nome" outerRadius="80%" labelLine={false} label={rotuloPorcentagem} stroke="#131a2e">
+              {dados.map((d, i) => (
+                <Cell key={d.nome} fill={corDaCategoria(d.nome, i)} />
+              ))}
+            </Pie>
+            <Tooltip formatter={(valor) => formatarMoeda(valor)} />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
     </div>
   )
 }

@@ -110,3 +110,15 @@ tbody tr:hover { background: var(--surface-2); }
 /* Acabamento do formulário */
 input, select { height: 44px; }
 .form-transacao > div > button { grid-column: 1 / -1; width: 100%; padding: 11px 14px !important; }
+
+/* Painéis: formulário e gráfico no estilo de cartão */
+.grade { align-items: stretch; }
+.grade > .panel { margin-top: 0; }
+.form-transacao {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.painel-grafico { height: 100%; }

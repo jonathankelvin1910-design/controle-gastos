@@ -106,11 +106,13 @@ function App() {
         <GraficoPizza por_categoria={resumoFiltrado.por_categoria} />
       </div>
 
-      <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginBottom: '16px' }}>
+      <div className="panel">
+        <h2>Transações</h2>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'flex-start', marginBottom: '16px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <label>Mês</label>
-            <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)}>
+            <select style={{ width: '200px' }} value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)}>
               <option value="">Todos</option>
               {meses.map(mes => (
                 <option key={mes} value={mes}>
@@ -121,7 +123,7 @@ function App() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <label>Categoria</label>
-            <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
+            <select style={{ width: '200px' }} value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
               <option value="">Todas</option>
               {categorias.map(cat => (
                 <option key={cat.id} value={cat.id}>
@@ -131,14 +133,14 @@ function App() {
             </select>
           </div>
         </div>
-      </div>
 
-      <TabelaTransacoes
-        transacoes={transacoesFiltradas}
-        recarregar={recarregar}
-        categorias={categorias}
-        onEditar={handleEditar}
-      />
+        <TabelaTransacoes
+          transacoes={transacoesFiltradas}
+          recarregar={recarregar}
+          categorias={categorias}
+          onEditar={handleEditar}
+        />
+      </div>
     </div>
   )
 }

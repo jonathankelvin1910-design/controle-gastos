@@ -13,6 +13,7 @@ function App() {
   const [transacaoEdicao, setTransacaoEdicao] = useState(null)
   const [filtroMes, setFiltroMes] = useState('')
   const [filtroCategoria, setFiltroCategoria] = useState('')
+  const [busca, setBusca] = useState('')
 
   const recarregar = async () => {
     try {
@@ -42,6 +43,19 @@ function App() {
   const transacoesFiltradas = transacoes.filter(t => {
     if (filtroMes && t.data?.slice(0, 7) !== filtroMes) return false
     if (filtroCategoria && Number(t.categoria_id) !== Number(filtroCategoria)) return false
+    if (busca.trim()) {
+      const descricaoNormalizada = String(t.descricao ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase()
+      const buscaNormalizada = busca
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase()
+      if (!descricaoNormalizada.includes(buscaNormalizada)) return false
+    }
     return true
   })
 
@@ -134,6 +148,16 @@ function App() {
                 </option>
               ))}
             </select>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <label>Buscar</label>
+            <input
+              type="text"
+              placeholder="Buscar por descrição..."
+              style={{ width: '200px' }}
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
           </div>
         </div>
 

@@ -143,3 +143,6 @@ select option:hover {
 
 /* Mensagens de erro dos campos */
 .erro-campo { color: var(--red, #ef4444); font-size: 0.75rem; margin-top: 2px; }
+
+/* Alinha os campos ao topo mesmo com mensagem de erro */
+.form-transacao > div { align-items: start !important; }

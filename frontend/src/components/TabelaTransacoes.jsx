@@ -91,7 +91,7 @@ function TabelaTransacoes({ transacoes, recarregar, categorias = [], onEditar })
         <tbody>
           {transacoesOrdenadas.length === 0 ? (
             <tr>
-              <td colSpan="6">Nenhum transação registrada.</td>
+              <td colSpan="6">Nenhuma transação registrada.</td>
             </tr>
           ) : (
             transacoesOrdenadas.map((t) => (

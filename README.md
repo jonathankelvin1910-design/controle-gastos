@@ -11,6 +11,7 @@ Aplicação web para controlar finanças pessoais: registre receitas e despesas 
 - Edição de uma transação existente no próprio formulário (botões Salvar e Cancelar)
 - Exclusão de transações direto da tabela
 - Listagem com valores em reais (R$), datas no formato brasileiro e tipo destacado por cor (receita em verde, despesa em vermelho)
+- Ordenação por qualquer coluna da tabela (crescente ou decrescente), com indicação visual
 
 ### Validação do formulário
 - Descrição obrigatória (espaços em branco não valem)

@@ -1,104 +1,80 @@
-# Controle de Gastos
+Controle de Gastos
 
-Aplicação web para controlar receitas e despesas pessoais, com resumo financeiro, filtros e gráficos.
+Aplicação web para controlar finanças pessoais: registre receitas e despesas por categoria, acompanhe o saldo e visualize para onde o dinheiro está indo.
 
-**Stack:** MySQL · FastAPI (Python) · React + Vite
+Tecnologias: MySQL 8 · Python + FastAPI + SQLAlchemy · React (Vite) + Axios + Recharts
 
-## Funcionalidades
-
-- Cadastro, edição e exclusão de transações (receitas e despesas)
-- Categorias (Alimentação, Moradia, Saúde, Transporte, Educação, Lazer, Salário, Outros)
-- Resumo com total de receitas, despesas e saldo
-- Filtros por mês e por categoria (os cards e o gráfico de pizza acompanham o filtro)
-- Validação do formulário (descrição obrigatória, valor maior que zero, data obrigatória)
-- Gráfico de pizza: despesas por categoria
-- Gráfico de barras: receitas e despesas por mês
-- Tema escuro responsivo, com valores em reais (R$)
-
-## Estrutura
-
-```
+Funcionalidades
+Transações
+Cadastro de receitas e despesas com descrição, valor, tipo, data e categoria
+Edição de uma transação existente no próprio formulário (botões Salvar e Cancelar)
+Exclusão de transações direto da tabela
+Listagem com valores em reais (R$), datas no formato brasileiro e tipo destacado por cor (receita em verde, despesa em vermelho)
+Validação do formulário
+Descrição obrigatória (espaços em branco não valem)
+Valor deve ser maior que zero
+Data obrigatória
+Mensagens de erro exibidas abaixo de cada campo, que somem ao corrigir
+Categorias
+Alimentação, Moradia, Saúde, Transporte, Educação, Lazer, Salário e Outros
+Cada categoria tem uma cor fixa, igual no gráfico e na legenda
+Transações sem categoria aparecem como "Sem categoria"
+Resumo financeiro
+Cards com total de receitas, despesas e saldo
+Os valores acompanham os filtros aplicados
+Filtros
+Por mês
+Por categoria
+Combinação dos dois filtros ao mesmo tempo
+Cards, gráfico de pizza e tabela refletem o filtro escolhido
+Gráficos
+Despesas por categoria (pizza): percentuais nas fatias, legenda por categoria e tooltip com o valor em R$
+Receitas e despesas por mês (barras): comparação mensal, em ordem cronológica, com tooltip em R$
+Interface
+Tema escuro com painéis, cards e tabela estilizados
+Layout responsivo: os painéis se reorganizam em telas menores
+Listas de seleção legíveis no tema escuro
+Arquitetura
+Navegador (React + Vite)
+        │  HTTP / JSON (Axios)
+        ▼
+API FastAPI  ──  SQLAlchemy + PyMySQL  ──▶  MySQL
 controle-gastos/
-├── backend/            # API FastAPI
-│   ├── app/            # main, database, models, schemas, crud, routers
-│   ├── requirements.txt
-│   └── .env.example
 ├── database/
-│   └── schema.sql      # criação das tabelas
-├── frontend/           # React + Vite
-│   └── src/
-│       ├── api/        # cliente axios
-│       └── components/ # SaldoCards, FormTransacao, TabelaTransacoes,
-│                       # GraficoPizza, GraficoMensal
-├── especificacao.md
-├── INSTALACAO-UBUNTU.md
-└── README.md
-```
+│   └── schema.sql          # tabelas e dados de exemplo
+├── backend/
+│   └── app/
+│       ├── main.py         # aplicação, CORS e criação das tabelas
+│       ├── database.py     # conexão e configuração por variáveis de ambiente
+│       ├── models.py       # modelos SQLAlchemy
+│       ├── schemas.py      # esquemas de validação (Pydantic)
+│       ├── crud.py         # operações no banco
+│       └── routers/        # categorias, transações e resumo
+└── frontend/
+    └── src/
+        ├── App.jsx         # estado, filtros e composição da página
+        ├── api/            # cliente HTTP
+        └── components/
+            ├── SaldoCards.jsx
+            ├── FormTransacao.jsx
+            ├── TabelaTransacoes.jsx
+            ├── GraficoPizza.jsx
+            └── GraficoMensal.jsx
+Modelo de dados
+categorias: identificador e nome
+transacoes: identificador, descrição, valor, tipo (receita ou despesa), data e categoria (opcional)
+API
+Método	Rota	Descrição
+GET / POST	/categorias/	Lista e cria categorias
+GET / PUT / DELETE	/categorias/{id}	Detalha, atualiza e exclui uma categoria
+GET / POST	/transacoes/	Lista e cria transações
+GET / PUT / DELETE	/transacoes/{id}	Detalha, atualiza e exclui uma transação
+GET	/resumo/	Totais gerais e por categoria
+GET	/health	Verificação de saúde da API
 
-## Requisitos
+A documentação interativa (Swagger) fica disponível em /docs com o backend em execução.
 
-- Python 3.12 ou superior
-- Node.js e npm
-- MySQL 8
-
-Passo a passo de instalação no Ubuntu (incluindo MySQL e usuário do banco): veja [INSTALACAO-UBUNTU.md](INSTALACAO-UBUNTU.md).
-
-## Configuração
-
-1. Crie o banco e as tabelas com `database/schema.sql`.
-2. Copie o arquivo de ambiente e preencha com seus dados:
-
-   ```bash
-   cd backend
-   cp .env.example .env
-   chmod 600 .env
-   ```
-
-   Variáveis: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `APP_HOST`, `APP_PORT`.
-   O `.env` nunca deve ser enviado ao Git.
-
-## Como rodar
-
-**Backend** (terminal 1):
-
-```bash
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-Verifique em http://127.0.0.1:8000/health e a documentação interativa em http://127.0.0.1:8000/docs.
-
-**Frontend** (terminal 2):
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Abra http://localhost:5173.
-
-## API
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | `/health` | Verifica se a API está no ar |
-| GET, POST | `/categorias/` | Lista e cria categorias |
-| GET, POST | `/transacoes/` | Lista e cria transações |
-| PUT, DELETE | `/transacoes/{id}` | Edita e exclui uma transação |
-| GET | `/resumo/` | Totais gerais e por categoria |
-
-## Segurança
-
-- Use um usuário próprio do MySQL (não o root) para a aplicação.
-- Nunca envie o arquivo `.env` ao GitHub nem cole senhas em chats ou prints.
-
-## Próximas ideias
-
-- Busca por descrição
-- Exportar transações para CSV
-- Meta de gasto por categoria
-- Ordenação e paginação da tabela
+Segurança
+Credenciais do banco ficam em variáveis de ambiente (.env), fora do Git
+A aplicação usa um usuário próprio do MySQL, sem privilégios de administrador
+CORS restrito à origem do frontend

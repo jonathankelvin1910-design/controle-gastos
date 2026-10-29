@@ -8,6 +8,7 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
   const [data, setData] = useState(new Date().toISOString().slice(0, 10))
   const [categoriaId, setCategoriaId] = useState('')
   const [erro, setErro] = useState('')
+  const [erros, setErros] = useState({})
 
   useEffect(() => {
     if (transacaoEdicao) {
@@ -24,6 +25,7 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
       setCategoriaId('')
     }
     setErro('')
+    setErros({})
   }, [transacaoEdicao])
 
   const resetar = () => {
@@ -32,11 +34,32 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
     setTipo('receita')
     setData(new Date().toISOString().slice(0, 10))
     setCategoriaId('')
+    setErros({})
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setErro('')
+    const novosErros = {}
+
+    if (!descricao.trim()) {
+      novosErros.descricao = 'Informe uma descrição.'
+    }
+
+    if (!(Number(valor) > 0)) {
+      novosErros.valor = 'O valor deve ser maior que zero.'
+    }
+
+    if (!data) {
+      novosErros.data = 'Informe a data.'
+    }
+
+    if (Object.keys(novosErros).length > 0) {
+      setErros(novosErros)
+      return
+    }
+
+    setErros({})
     const dados = {
       descricao,
       valor: Number(valor),
@@ -82,9 +105,13 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
             type="text"
             placeholder="Descrição"
             value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
+            onChange={(e) => {
+              setDescricao(e.target.value)
+              if (erros.descricao) setErros({ ...erros, descricao: '' })
+            }}
             required
           />
+          {erros.descricao && <span className="erro-campo">{erros.descricao}</span>}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -96,9 +123,13 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
             min="0"
             placeholder="Valor"
             value={valor === '' ? '' : valor}
-            onChange={(e) => setValor(e.target.value)}
+            onChange={(e) => {
+              setValor(e.target.value)
+              if (erros.valor) setErros({ ...erros, valor: '' })
+            }}
             required
           />
+          {erros.valor && <span className="erro-campo">{erros.valor}</span>}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -115,9 +146,13 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
             id="data"
             type="date"
             value={data}
-            onChange={(e) => setData(e.target.value)}
+            onChange={(e) => {
+              setData(e.target.value)
+              if (erros.data) setErros({ ...erros, data: '' })
+            }}
             required
           />
+          {erros.data && <span className="erro-campo">{erros.data}</span>}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>

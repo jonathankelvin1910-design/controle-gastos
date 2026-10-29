@@ -122,3 +122,21 @@ input, select { height: 44px; }
   padding: 20px;
 }
 .painel-grafico { height: 100%; }
+
+/* Selects e lista de opções legíveis no tema escuro */
+select,
+input,
+textarea {
+  color-scheme: dark;
+}
+
+select option {
+  background: var(--surface-2);
+  color: #e5e7eb;
+}
+
+select option:checked,
+select option:hover {
+  background: var(--accent);
+  color: #fff;
+}

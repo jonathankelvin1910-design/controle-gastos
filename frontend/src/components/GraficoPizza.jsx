@@ -47,7 +47,7 @@ function GraficoPizza({ por_categoria }) {
       ) : (
         <ResponsiveContainer width="100%" height={340}>
           <PieChart>
-            <Pie data={dados} dataKey="valor" nameKey="nome" outerRadius="80%" labelLine={false} label={rotuloPorcentagem} stroke="#131a2e">
+            <Pie data={dados} dataKey="valor" nameKey="nome" outerRadius="80%" labelLine={false} label={rotuloPorcentagem} stroke={dados.length > 1 ? "#131a2e" : "none"}>
               {dados.map((d, i) => (
                 <Cell key={d.nome} fill={corDaCategoria(d.nome, i)} />
               ))}

@@ -84,7 +84,7 @@ function FormTransacao({ categorias, onCriado, transacaoEdicao, onCancelarEdicao
   }
 
   return (
-    <form className="form-transacao" onSubmit={handleSubmit}>
+    <form className="form-transacao" onSubmit={handleSubmit} noValidate>
       <h2>{transacaoEdicao ? 'Editar Transação' : 'Nova Transação'}</h2>
       {erro && <p className="erro">{erro}</p>}
 

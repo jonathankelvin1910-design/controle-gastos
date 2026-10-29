@@ -140,3 +140,6 @@ select option:hover {
   background: var(--accent);
   color: #fff;
 }
+
+/* Mensagens de erro dos campos */
+.erro-campo { color: var(--red, #ef4444); font-size: 0.75rem; margin-top: 2px; }

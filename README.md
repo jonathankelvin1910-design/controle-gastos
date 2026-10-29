@@ -12,6 +12,8 @@ Aplicação web para controlar finanças pessoais: registre receitas e despesas 
 - Exclusão de transações direto da tabela
 - Listagem com valores em reais (R$), datas no formato brasileiro e tipo destacado por cor (receita em verde, despesa em vermelho)
 - Ordenação por qualquer coluna da tabela (crescente ou decrescente), com indicação visual
+- Ordenação por qualquer coluna da tabela (crescente ou decrescente), com indicação visual
+- Exportação das transações filtradas para CSV, pronta para abrir no Excel ou LibreOffice
 
 ### Validação do formulário
 - Descrição obrigatória (espaços em branco não valem)
@@ -68,6 +70,7 @@ controle-gastos/
 │       └── routers/        # categorias, transações e resumo
 └── frontend/
     └── src/
+        └── utils/          # exportação de CSV
         ├── App.jsx         # estado, filtros e composição da página
         ├── api/            # cliente HTTP
         └── components/
@@ -104,6 +107,5 @@ A documentação interativa (Swagger) fica disponível em `/docs` com o backend 
 
 ## Próximas ideias
 
-- Exportar transações para CSV
 - Meta de gasto por categoria
-- Ordenação e paginação da tabela
+- Paginação da tabela

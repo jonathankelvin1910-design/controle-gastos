@@ -5,6 +5,7 @@ import TabelaTransacoes from './components/TabelaTransacoes'
 import GraficoPizza from './components/GraficoPizza'
 import GraficoMensal from './components/GraficoMensal'
 import { api } from './api/api'
+import { exportarTransacoesCsv } from './utils/exportarCsv'
 
 function App() {
   const [resumo, setResumo] = useState(null)
@@ -159,6 +160,14 @@ function App() {
               onChange={(e) => setBusca(e.target.value)}
             />
           </div>
+          <button
+            type="button"
+            style={{ marginLeft: 'auto', alignSelf: 'flex-end' }}
+            onClick={() => exportarTransacoesCsv(transacoesFiltradas, getNomeCategoria)}
+            disabled={transacoesFiltradas.length === 0}
+          >
+            Exportar CSV
+          </button>
         </div>
 
         <TabelaTransacoes

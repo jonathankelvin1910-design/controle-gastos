@@ -1,137 +1,104 @@
 # Controle de Gastos
 
-Aplicação web para registrar receitas e despesas por categoria, com saldo geral e gráfico de pizza.
+Aplicação web para controlar receitas e despesas pessoais, com resumo financeiro, filtros e gráficos.
 
-- **Banco:** MySQL 8
-- **Backend:** Python + FastAPI + SQLAlchemy + PyMySQL
-- **Frontend:** React (Vite) + Axios + Recharts
+**Stack:** MySQL · FastAPI (Python) · React + Vite
+
+## Funcionalidades
+
+- Cadastro, edição e exclusão de transações (receitas e despesas)
+- Categorias (Alimentação, Moradia, Saúde, Transporte, Educação, Lazer, Salário, Outros)
+- Resumo com total de receitas, despesas e saldo
+- Filtros por mês e por categoria (os cards e o gráfico de pizza acompanham o filtro)
+- Validação do formulário (descrição obrigatória, valor maior que zero, data obrigatória)
+- Gráfico de pizza: despesas por categoria
+- Gráfico de barras: receitas e despesas por mês
+- Tema escuro responsivo, com valores em reais (R$)
 
 ## Estrutura
 
 ```
 controle-gastos/
-├── database/
-│   └── schema.sql
-├── backend/
-│   ├── app/
+├── backend/            # API FastAPI
+│   ├── app/            # main, database, models, schemas, crud, routers
 │   ├── requirements.txt
 │   └── .env.example
-├── frontend/
+├── database/
+│   └── schema.sql      # criação das tabelas
+├── frontend/           # React + Vite
 │   └── src/
+│       ├── api/        # cliente axios
+│       └── components/ # SaldoCards, FormTransacao, TabelaTransacoes,
+│                       # GraficoPizza, GraficoMensal
+├── especificacao.md
+├── INSTALACAO-UBUNTU.md
 └── README.md
 ```
 
-## Pré-requisitos
+## Requisitos
 
-Confira no PowerShell:
+- Python 3.12 ou superior
+- Node.js e npm
+- MySQL 8
 
-```powershell
-mysql --version
-node --version
-npm --version
-py --version
-```
+Passo a passo de instalação no Ubuntu (incluindo MySQL e usuário do banco): veja [INSTALACAO-UBUNTU.md](INSTALACAO-UBUNTU.md).
 
-Se algum não for reconhecido, instale:
+## Configuração
 
-```powershell
-winget install Oracle.MySQL
-winget install OpenJS.NodeJS.LTS
-winget install Python.Python.3.12
-```
+1. Crie o banco e as tabelas com `database/schema.sql`.
+2. Copie o arquivo de ambiente e preencha com seus dados:
 
-Depois de instalar, feche e abra o PowerShell. Se o `mysql` não for reconhecido mesmo instalado, adicione a pasta `C:\Program Files\MySQL\MySQL Server 8.0\bin` ao PATH.
+   ```bash
+   cd backend
+   cp .env.example .env
+   chmod 600 .env
+   ```
 
-## 1. Criar o banco de dados
+   Variáveis: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `APP_HOST`, `APP_PORT`.
+   O `.env` nunca deve ser enviado ao Git.
 
-Use o comando `source`, que preserva os acentos:
+## Como rodar
 
-```powershell
-Set-Location C:\programacao\projetos\controle-gastos
-mysql -u root -p --default-character-set=utf8mb4 -e "source C:/programacao/projetos/controle-gastos/database/schema.sql"
-```
+**Backend** (terminal 1):
 
-Para conferir:
-
-```powershell
-mysql -u root -p --default-character-set=utf8mb4 -e "SELECT id, nome FROM controle_gastos.categorias; SELECT COUNT(*) AS total FROM controle_gastos.transacoes;"
-```
-
-Esperado: 8 categorias e 10 transações.
-
-Para refazer do zero:
-
-```powershell
-mysql -u root -p -e "DROP DATABASE IF EXISTS controle_gastos;"
-```
-
-## 2. Configurar o backend
-
-```powershell
-Set-Location C:\programacao\projetos\controle-gastos\backend
-Copy-Item .env.example .env
-notepad .env
-```
-
-No `.env`, troque `DB_PASSWORD` pela senha real do MySQL. Esse arquivo **não** vai para o git.
-
-## 3. Iniciar o backend
-
-```powershell
-Set-Location C:\programacao\projetos\controle-gastos\backend
-py -m venv venv
-.\venv\Scripts\Activate.ps1
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Se o PowerShell bloquear o `Activate.ps1`, rode uma vez:
+Verifique em http://127.0.0.1:8000/health e a documentação interativa em http://127.0.0.1:8000/docs.
 
-```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-```
+**Frontend** (terminal 2):
 
-Deixe essa janela aberta. API: <http://localhost:8000> — documentação: <http://localhost:8000/docs>.
-
-Se o MySQL estiver parado, abra um PowerShell como administrador e rode:
-
-```powershell
-Start-Service MySQL80
-```
-
-## 4. Iniciar o frontend
-
-Em **outro** PowerShell:
-
-```powershell
-Set-Location C:\programacao\projetos\controle-gastos\frontend
+```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-Abra <http://localhost:5173>.
+Abra http://localhost:5173.
 
-## Endpoints principais
+## API
 
 | Método | Rota | Descrição |
-|---|---|---|
-| GET / POST | `/categorias/` | Lista / cria categorias |
-| GET / PUT / DELETE | `/categorias/{id}` | Detalhe / atualiza / exclui |
-| GET / POST | `/transacoes/` | Lista / cria transações |
-| GET / PUT / DELETE | `/transacoes/{id}` | Detalhe / atualiza / exclui |
-| GET | `/resumo/` | Totais por categoria e saldo geral |
-| GET | `/health` | Verificação de saúde |
+|--------|------|-----------|
+| GET | `/health` | Verifica se a API está no ar |
+| GET, POST | `/categorias/` | Lista e cria categorias |
+| GET, POST | `/transacoes/` | Lista e cria transações |
+| PUT, DELETE | `/transacoes/{id}` | Edita e exclui uma transação |
+| GET | `/resumo/` | Totais gerais e por categoria |
 
-## Problemas comuns
+## Segurança
 
-- **`Access denied for user 'root'`:** senha errada no `backend/.env`. Corrija, salve e reinicie o `uvicorn`.
-- **`Can't connect to MySQL server`:** o serviço está parado. Use `Start-Service MySQL80` como administrador.
-- **Vite abre na porta 5174:** a 5173 está ocupada. O CORS do backend só libera a 5173 (e `127.0.0.1:5173`). Encerre o processo que usa a porta:
-  ```powershell
-  Get-NetTCPConnection -LocalPort 5173 | Select-Object OwningProcess
-  Get-Process -Id NUMERO_DO_PROCESSO
-  Stop-Process -Id NUMERO_DO_PROCESSO
-  ```
-  Só encerre se for o `node` do próprio projeto.
-- **Cards zerados ou tabela vazia:** confira se o backend está rodando e veja a aba Network (`F12`) do navegador.
-- **Acentos quebrados no PowerShell:** é só a exibição do terminal. Execute `chcp 65001` e repita o comando.
+- Use um usuário próprio do MySQL (não o root) para a aplicação.
+- Nunca envie o arquivo `.env` ao GitHub nem cole senhas em chats ou prints.
+
+## Próximas ideias
+
+- Busca por descrição
+- Exportar transações para CSV
+- Meta de gasto por categoria
+- Ordenação e paginação da tabela

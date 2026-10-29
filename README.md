@@ -1,44 +1,59 @@
-Controle de Gastos
+# Controle de Gastos
 
 Aplicação web para controlar finanças pessoais: registre receitas e despesas por categoria, acompanhe o saldo e visualize para onde o dinheiro está indo.
 
-Tecnologias: MySQL 8 · Python + FastAPI + SQLAlchemy · React (Vite) + Axios + Recharts
+**Tecnologias:** MySQL 8 · Python + FastAPI + SQLAlchemy · React (Vite) + Axios + Recharts
 
-Funcionalidades
-Transações
-Cadastro de receitas e despesas com descrição, valor, tipo, data e categoria
-Edição de uma transação existente no próprio formulário (botões Salvar e Cancelar)
-Exclusão de transações direto da tabela
-Listagem com valores em reais (R$), datas no formato brasileiro e tipo destacado por cor (receita em verde, despesa em vermelho)
-Validação do formulário
-Descrição obrigatória (espaços em branco não valem)
-Valor deve ser maior que zero
-Data obrigatória
-Mensagens de erro exibidas abaixo de cada campo, que somem ao corrigir
-Categorias
-Alimentação, Moradia, Saúde, Transporte, Educação, Lazer, Salário e Outros
-Cada categoria tem uma cor fixa, igual no gráfico e na legenda
-Transações sem categoria aparecem como "Sem categoria"
-Resumo financeiro
-Cards com total de receitas, despesas e saldo
-Os valores acompanham os filtros aplicados
-Filtros
-Por mês
-Por categoria
-Combinação dos dois filtros ao mesmo tempo
-Cards, gráfico de pizza e tabela refletem o filtro escolhido
-Gráficos
-Despesas por categoria (pizza): percentuais nas fatias, legenda por categoria e tooltip com o valor em R$
-Receitas e despesas por mês (barras): comparação mensal, em ordem cronológica, com tooltip em R$
-Interface
-Tema escuro com painéis, cards e tabela estilizados
-Layout responsivo: os painéis se reorganizam em telas menores
-Listas de seleção legíveis no tema escuro
-Arquitetura
+## Funcionalidades
+
+### Transações
+- Cadastro de receitas e despesas com descrição, valor, tipo, data e categoria
+- Edição de uma transação existente no próprio formulário (botões Salvar e Cancelar)
+- Exclusão de transações direto da tabela
+- Listagem com valores em reais (R$), datas no formato brasileiro e tipo destacado por cor (receita em verde, despesa em vermelho)
+
+### Validação do formulário
+- Descrição obrigatória (espaços em branco não valem)
+- Valor deve ser maior que zero
+- Data obrigatória
+- Mensagens de erro exibidas abaixo de cada campo, que somem ao corrigir
+
+### Categorias
+- Alimentação, Moradia, Saúde, Transporte, Educação, Lazer, Salário e Outros
+- Cada categoria tem uma cor fixa, igual no gráfico e na legenda
+- Transações sem categoria aparecem como "Sem categoria"
+
+### Resumo financeiro
+- Cards com total de receitas, despesas e saldo
+- Saldo positivo em verde e negativo em vermelho
+- Os valores acompanham os filtros aplicados
+
+### Filtros
+- Por mês
+- Por categoria
+- Busca por descrição, sem diferenciar maiúsculas de minúsculas nem acentos
+- Combinação dos filtros e da busca ao mesmo tempo
+- Cards, gráfico de pizza e tabela refletem os filtros e a busca
+
+### Gráficos
+- **Despesas por categoria** (pizza): percentuais nas fatias, legenda por categoria e tooltip com o valor em R$
+- **Receitas e despesas por mês** (barras): comparação mensal, em ordem cronológica, com tooltip em R$
+
+### Interface
+- Tema escuro com painéis, cards e tabela estilizados
+- Layout responsivo: os painéis se reorganizam em telas menores
+- Listas de seleção legíveis no tema escuro
+
+## Arquitetura
+
+```
 Navegador (React + Vite)
         │  HTTP / JSON (Axios)
         ▼
 API FastAPI  ──  SQLAlchemy + PyMySQL  ──▶  MySQL
+```
+
+```
 controle-gastos/
 ├── database/
 │   └── schema.sql          # tabelas e dados de exemplo
@@ -60,21 +75,34 @@ controle-gastos/
             ├── TabelaTransacoes.jsx
             ├── GraficoPizza.jsx
             └── GraficoMensal.jsx
-Modelo de dados
-categorias: identificador e nome
-transacoes: identificador, descrição, valor, tipo (receita ou despesa), data e categoria (opcional)
-API
-Método	Rota	Descrição
-GET / POST	/categorias/	Lista e cria categorias
-GET / PUT / DELETE	/categorias/{id}	Detalha, atualiza e exclui uma categoria
-GET / POST	/transacoes/	Lista e cria transações
-GET / PUT / DELETE	/transacoes/{id}	Detalha, atualiza e exclui uma transação
-GET	/resumo/	Totais gerais e por categoria
-GET	/health	Verificação de saúde da API
+```
 
-A documentação interativa (Swagger) fica disponível em /docs com o backend em execução.
+## Modelo de dados
 
-Segurança
-Credenciais do banco ficam em variáveis de ambiente (.env), fora do Git
-A aplicação usa um usuário próprio do MySQL, sem privilégios de administrador
-CORS restrito à origem do frontend
+- **categorias:** identificador e nome
+- **transacoes:** identificador, descrição, valor, tipo (receita ou despesa), data e categoria (opcional)
+
+## API
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET / POST | `/categorias/` | Lista e cria categorias |
+| GET / PUT / DELETE | `/categorias/{id}` | Detalha, atualiza e exclui uma categoria |
+| GET / POST | `/transacoes/` | Lista e cria transações |
+| GET / PUT / DELETE | `/transacoes/{id}` | Detalha, atualiza e exclui uma transação |
+| GET | `/resumo/` | Totais gerais e por categoria |
+| GET | `/health` | Verificação de saúde da API |
+
+A documentação interativa (Swagger) fica disponível em `/docs` com o backend em execução.
+
+## Segurança
+
+- Credenciais do banco ficam em variáveis de ambiente (`.env`), fora do Git
+- A aplicação usa um usuário próprio do MySQL, sem privilégios de administrador
+- CORS restrito à origem do frontend
+
+## Próximas ideias
+
+- Exportar transações para CSV
+- Meta de gasto por categoria
+- Ordenação e paginação da tabela

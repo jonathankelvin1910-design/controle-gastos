@@ -104,6 +104,7 @@ A documentação interativa (Swagger) fica disponível em `/docs` com o backend 
 - Credenciais do banco ficam em variáveis de ambiente (`.env`), fora do Git
 - A aplicação usa um usuário próprio do MySQL, sem privilégios de administrador
 - CORS restrito à origem do frontend
+- A API valida os dados recebidos (descrição obrigatória, valor maior que zero e com limite, tipo receita ou despesa) e responde 422 em caso de erro
 
 ## Próximas ideias
 

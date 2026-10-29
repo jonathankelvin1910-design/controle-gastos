@@ -3,6 +3,7 @@ import SaldoCards from './components/SaldoCards'
 import FormTransacao from './components/FormTransacao'
 import TabelaTransacoes from './components/TabelaTransacoes'
 import GraficoPizza from './components/GraficoPizza'
+import GraficoMensal from './components/GraficoMensal'
 import { api } from './api/api'
 
 function App() {
@@ -105,6 +106,8 @@ function App() {
         />
         <GraficoPizza por_categoria={resumoFiltrado.por_categoria} />
       </div>
+
+      <GraficoMensal transacoes={transacoes} />
 
       <div className="panel">
         <h2>Transações</h2>

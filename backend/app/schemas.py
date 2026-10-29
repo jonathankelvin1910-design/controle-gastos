@@ -1,13 +1,21 @@
 from datetime import date
-from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from typing import Annotated, List, Literal, Optional
+
+from pydantic import BaseModel, Field, StringConstraints
+
+
+# Limites iguais aos das colunas do banco (database/schema.sql)
+Nome = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
+Descricao = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=255)]
+Valor = Annotated[float, Field(gt=0, le=99999999.99)]
+Tipo = Literal["receita", "despesa"]
 
 
 # --------------------------- Categorias ---------------------------
 
 class CategoriaBase(BaseModel):
-    nome: str
+    nome: Nome
 
 
 class CategoriaCreate(CategoriaBase):
@@ -15,7 +23,7 @@ class CategoriaCreate(CategoriaBase):
 
 
 class CategoriaUpdate(BaseModel):
-    nome: Optional[str] = None
+    nome: Optional[Nome] = None
 
 
 class CategoriaResponse(CategoriaBase):
@@ -27,9 +35,9 @@ class CategoriaResponse(CategoriaBase):
 # --------------------------- Transações ---------------------------
 
 class TransacaoBase(BaseModel):
-    descricao: str
-    valor: float = Field(gt=0)
-    tipo: str
+    descricao: Descricao
+    valor: Valor
+    tipo: Tipo
     data: date
     categoria_id: Optional[int] = None
 
@@ -39,9 +47,9 @@ class TransacaoCreate(TransacaoBase):
 
 
 class TransacaoUpdate(BaseModel):
-    descricao: Optional[str] = None
-    valor: Optional[float] = Field(default=None, gt=0)
-    tipo: Optional[str] = None
+    descricao: Optional[Descricao] = None
+    valor: Optional[Valor] = None
+    tipo: Optional[Tipo] = None
     data: Optional[date] = None
     categoria_id: Optional[int] = None
 

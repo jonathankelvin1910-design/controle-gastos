@@ -137,7 +137,7 @@ function App() {
               <option value="">Todos</option>
               {meses.map(mes => (
                 <option key={mes} value={mes}>
-                  {mes.split('-')[1]}/${mes.split('-')[0]}
+                  {mes.split('-')[1]}/{mes.split('-')[0]}
                 </option>
               ))}
             </select>

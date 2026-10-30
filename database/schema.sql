@@ -66,3 +66,20 @@ INSERT INTO transacoes (descricao, valor, tipo, data, categoria_id) VALUES
     ('Projeto de freelance',   800.00, 'receita', '2024-01-25', 8),
     ('Restaurante',            145.30, 'despesa', '2024-01-22', 1),
     ('Plano de saúde',         450.00, 'despesa', '2024-01-15', 6);
+
+
+-- ============================================================================
+-- Metas de gasto mensais por categoria (uma meta por categoria)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS metas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria_id INT NOT NULL UNIQUE,
+    valor_limite DECIMAL(10, 2) NOT NULL,
+    CONSTRAINT fk_metas_categoria FOREIGN KEY (categoria_id)
+        REFERENCES categorias (id) ON DELETE CASCADE
+);
+
+INSERT IGNORE INTO metas (categoria_id, valor_limite) VALUES
+    (1, 800.00),
+    (3, 1500.00),
+    (5, 150.00);

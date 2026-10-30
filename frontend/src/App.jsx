@@ -4,6 +4,7 @@ import FormTransacao from './components/FormTransacao'
 import TabelaTransacoes from './components/TabelaTransacoes'
 import GraficoPizza from './components/GraficoPizza'
 import GraficoMensal from './components/GraficoMensal'
+import PainelMetas from './components/PainelMetas'
 import { api } from './api/api'
 import { exportarTransacoesCsv } from './utils/exportarCsv'
 
@@ -123,6 +124,8 @@ function App() {
       </div>
 
       <GraficoMensal transacoes={transacoes} />
+
+      <PainelMetas categorias={categorias} transacoes={transacoes} />
 
       <div className="panel">
         <h2>Transações</h2>

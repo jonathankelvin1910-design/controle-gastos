@@ -79,3 +79,24 @@ class ResumoGeral(BaseModel):
 class ResumoResponse(BaseModel):
     resumo_geral: ResumoGeral
     por_categoria: List[ResumoCategoria]
+
+
+# ------------------------------ Metas ------------------------------
+
+class MetaUpdate(BaseModel):
+    valor_limite: Valor
+
+
+class MetaResponse(BaseModel):
+    categoria_id: int
+    categoria_nome: str
+    valor_limite: float
+
+
+class MetaProgresso(BaseModel):
+    categoria_id: int
+    categoria_nome: str
+    valor_limite: float
+    gasto: float
+    percentual: float
+    restante: float

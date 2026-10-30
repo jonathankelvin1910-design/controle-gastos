@@ -28,6 +28,7 @@ app.add_middleware(
 app.include_router(routers.categorias.router)
 app.include_router(routers.transacoes.router)
 app.include_router(routers.resumo.router)
+app.include_router(routers.metas.router)
 
 
 @app.get("/", tags=["raiz"])

@@ -39,3 +39,18 @@ class Transacao(Base):
     )
 
     categoria = relationship("Categoria", back_populates="transacoes")
+
+
+class Meta(Base):
+    __tablename__ = "metas"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    categoria_id = Column(
+        Integer,
+        ForeignKey("categorias.id", ondelete="CASCADE"),
+        nullable=False,
+        unique=True,
+    )
+    valor_limite = Column(DECIMAL(10, 2), nullable=False)
+
+    categoria = relationship("Categoria")

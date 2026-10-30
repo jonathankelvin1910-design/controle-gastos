@@ -30,6 +30,7 @@ Aplicação web para controlar finanças pessoais: registre receitas e despesas 
 - Cards com total de receitas, despesas e saldo
 - Saldo positivo em verde e negativo em vermelho
 - Os valores acompanham os filtros aplicados
+- Metas de gasto mensais por categoria, com barra de progresso (verde até 70%, amarela até 100% e vermelha quando excedida)
 
 ### Filtros
 - Por mês
@@ -95,6 +96,9 @@ controle-gastos/
 | GET / POST | `/transacoes/` | Lista e cria transações |
 | GET / PUT / DELETE | `/transacoes/{id}` | Detalha, atualiza e exclui uma transação |
 | GET | `/resumo/` | Totais gerais e por categoria |
+| GET | `/metas/` | Lista as metas de gasto |
+| GET | `/metas/progresso` | Gasto do mês contra a meta de cada categoria (`?mes=AAAA-MM`) |
+| PUT, DELETE | `/metas/{categoria_id}` | Define (ou altera) e remove a meta de uma categoria |
 | GET | `/health` | Verificação de saúde da API |
 
 A documentação interativa (Swagger) fica disponível em `/docs` com o backend em execução.
@@ -108,5 +112,4 @@ A documentação interativa (Swagger) fica disponível em `/docs` com o backend 
 
 ## Próximas ideias
 
-- Meta de gasto por categoria
 - Paginação da tabela

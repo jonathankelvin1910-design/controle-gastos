@@ -4,6 +4,12 @@ Aplicação web para controlar finanças pessoais: registre receitas e despesas 
 
 **Tecnologias:** MySQL 8 · Python + FastAPI + SQLAlchemy · React (Vite) + Axios + Recharts
 
+## Capturas de tela
+
+![Dashboard com resumo, gráficos e formulário](docs/dashboard.png)
+
+![Metas de gasto e lista de transações](docs/metas.png)
+
 ## Funcionalidades
 
 ### Transações
@@ -102,6 +108,36 @@ controle-gastos/
 | GET | `/health` | Verificação de saúde da API |
 
 A documentação interativa (Swagger) fica disponível em `/docs` com o backend em execução.
+
+## Como executar
+
+**Requisitos:** Python 3.12+, Node.js e MySQL 8.
+
+**1. Banco de dados**
+
+```bash
+mysql -u root < database/schema.sql
+mysql -u root -e "CREATE USER 'gastos'@'localhost' IDENTIFIED BY 'sua_senha'; GRANT ALL PRIVILEGES ON controle_gastos.* TO 'gastos'@'localhost'; FLUSH PRIVILEGES;"
+```
+
+**2. Backend** (http://localhost:8000, documentação em `/docs`)
+
+```bash
+cd backend
+cp .env.example .env        # preencha DB_PASSWORD com a senha criada acima
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+**3. Frontend** (http://localhost:5173)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ## Segurança
 
